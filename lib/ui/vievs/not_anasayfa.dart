@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:not_uygulamasi/data/entity/not_class.dart';
 import 'package:not_uygulamasi/ui/cubit/not_anasayfa_cubit.dart';
@@ -17,6 +19,8 @@ class _NotDefteriAnaSayfaState extends State<NotDefteriAnaSayfa> {
   bool aramaYapiliyorMu = false;
   final String notDurum = "Silinsin Mi ?";
   final String textButtonText = "Silinen Notlar";
+  bool listview = true;
+  var switchListTileText = "Liste Görünümü";
   @override
   void initState() {
     super.initState();
@@ -25,6 +29,7 @@ class _NotDefteriAnaSayfaState extends State<NotDefteriAnaSayfa> {
 
   @override
   Widget build(BuildContext context) {
+    
     
     return Scaffold(
       drawer: Drawer(
@@ -38,15 +43,39 @@ class _NotDefteriAnaSayfaState extends State<NotDefteriAnaSayfa> {
                 "Menü",
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              const Divider(),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   _DrawerMenuItems(textButtonText: textButtonText),
+                  const Icon(Icons.delete_outline_rounded)
                 ],
               ),
+              const Divider(),
+              Padding(
+                padding: const EdgeInsets.only(left: 19),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(switchListTileText),
+                    Transform.scale(
+                      scale: 0.7,
+                      child: Switch(value: listview, onChanged: (value){ 
+                                      setState(() {
+                      listview = value;
+                                      });
+                                    }),
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(),
+              
+              
+              
             ],
           ),
         ),
@@ -82,12 +111,14 @@ class _NotDefteriAnaSayfaState extends State<NotDefteriAnaSayfa> {
       body: BlocBuilder<NotAnasayfaCubit, List<Not>>(
           builder: (context, notlistesi) {
         if (notlistesi.isNotEmpty) {
-          return ListView.builder(
+          return listview == true ? ListView.builder(
               itemCount: notlistesi.length,
               itemBuilder: (context, indeks) {
                 var not = notlistesi[indeks];
                 return _ListViewNotes(not: not, notDurum: notDurum);
-              });
+              }) : GridView.builder(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2), itemCount:notlistesi.length,  itemBuilder: (context, indeks) {
+                var not = notlistesi[indeks];
+                return _ListViewNotes(not: not, notDurum: notDurum);});
         } else {
           return const Center();
         }
@@ -170,7 +201,7 @@ class _ListViewNotes extends StatelessWidget {
         },
         child: Card(
           child: SizedBox(
-            height: 120,
+            height: 130,
             child: Row(
               children: [
                 Expanded(

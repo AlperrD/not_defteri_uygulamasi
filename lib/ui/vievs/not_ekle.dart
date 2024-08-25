@@ -97,13 +97,15 @@ void _formatDateTime() {
                   contentPadding:const EdgeInsets.all(16.0),
                 ),
               ),
-              TextField(
-                controller: notController,
-                maxLines: 5,
-                decoration:  InputDecoration(
-                  border: InputBorder.none,
-                  hintText: notEkleIcerikText,
-                  contentPadding: const EdgeInsets.all(16.0),
+              Expanded(
+                child: TextField(
+                  controller: notController,
+                  maxLines: null,
+                  decoration:  InputDecoration(
+                    border: InputBorder.none,
+                    hintText: notEkleIcerikText,
+                    contentPadding: const EdgeInsets.all(16.0),
+                  ),
                 ),
               ),
             ],
