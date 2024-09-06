@@ -6,6 +6,7 @@ import 'package:not_uygulamasi/ui/cubit/not_anasayfa_cubit.dart';
 import 'package:not_uygulamasi/ui/cubit/not_duzenle.dart';
 import 'package:not_uygulamasi/ui/cubit/not_ekle_cubit.dart';
 import 'package:not_uygulamasi/ui/vievs/not_anasayfa.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -17,13 +18,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (create)=> NotEkleCubit(),),
-        BlocProvider(create: (create)=> NotAnasayfaCubit(),),
-        BlocProvider(create: (create)=> NotDuzenleCubit(),),
-        BlocProvider(create: (create)=> CopKutusuCubit())
+        BlocProvider(
+          create: (create) => NotEkleCubit(),
+        ),
+        BlocProvider(
+          create: (create) => NotAnasayfaCubit(),
+        ),
+        BlocProvider(
+          create: (create) => NotDuzenleCubit(),
+        ),
+        BlocProvider(create: (create) => CopKutusuCubit())
       ],
       child: MaterialApp(
-        title: 'Not Defteri',
+        title: 'Safe Notes',
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark().copyWith(
           appBarTheme: const AppBarTheme(

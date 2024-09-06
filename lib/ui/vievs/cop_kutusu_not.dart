@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:not_uygulamasi/data/entity/not_class.dart';
 import 'package:not_uygulamasi/ui/cubit/cop_kutusu_cubit.dart';
+import 'package:not_uygulamasi/ui/vievs/not_duzenle.dart';
 
 class CopKutusuNotlar extends StatefulWidget {
   const CopKutusuNotlar({super.key});
-  
 
   @override
   State<CopKutusuNotlar> createState() => _CopKutusuNotlarState();
@@ -20,6 +20,7 @@ class _CopKutusuNotlarState extends State<CopKutusuNotlar> {
     super.initState();
     context.read<CopKutusuCubit>().copKutusunotYukle();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +32,7 @@ class _CopKutusuNotlarState extends State<CopKutusuNotlar> {
                   context.read<CopKutusuCubit>().copKutusuNotAra(aramaSonucu);
                 },
               )
-            :  Text(copKutusuAppBarText),
+            : Text(copKutusuAppBarText),
         actions: [
           aramaYapiliyorMu
               ? IconButton(
@@ -51,8 +52,7 @@ class _CopKutusuNotlarState extends State<CopKutusuNotlar> {
                   icon: const Icon(Icons.search))
         ],
       ),
-      body: BlocBuilder<CopKutusuCubit, List<Not>>(
-          builder: (context, notlistesi) {
+      body: BlocBuilder<CopKutusuCubit, List<Not>>(builder: (context, notlistesi) {
         if (notlistesi.isNotEmpty) {
           return ListView.builder(
               itemCount: notlistesi.length,
@@ -82,6 +82,9 @@ class _CopKutusuListViewNotes extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => NotDuzenle(notlar: not))).then((value) => {
+                context.read<CopKutusuCubit>().copKutusunotYukle(),
+              });
         },
         child: Card(
           child: SizedBox(
@@ -92,8 +95,7 @@ class _CopKutusuListViewNotes extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8),
                     child: Column(
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -120,20 +122,13 @@ class _CopKutusuListViewNotes extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(
-                      content:
-                          Text("Not: ${not.baslik}, $notDurum"),
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Not: ${not.baslik}, $notDurum"),
                       action: SnackBarAction(
                         label: "Evet",
                         onPressed: () {
-                          context
-                              .read<CopKutusuCubit>()
-                              .copKutusuNotSil(not.notId);
-                          context
-                              .read<CopKutusuCubit>()
-                              .copKutusunotYukle();
-    
+                          context.read<CopKutusuCubit>().copKutusuNotSil(not.notId);
+                          context.read<CopKutusuCubit>().copKutusunotYukle();
                         },
                       ),
                     ));

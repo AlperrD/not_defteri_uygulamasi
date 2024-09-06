@@ -13,14 +13,15 @@ class CopKutusuCubit extends Cubit<List<Not>> {
     emit(liste);
   }
 
-  Future<void>copKutusuNotSil (int notId) async {
+  Future<void> copKutusuNotSil(int notId) async {
     // List<Map<String, dynamic>> maps = await db.rawQuery('SELECT * FROM notDefteri WHERE notId = $notId');
     // await nrepo.notKaydetCop(notId);
     await nrepo.copKutusuSil(notId);
     print("cop kutusundan not silme cubit çalıştı. ");
   }
-      Future<void> copKutusuNotAra(String aramaKelimesi) async {
+
+  Future<void> copKutusuNotAra(String aramaKelimesi) async {
     var liste = await nrepo.copKutusuNotara(aramaKelimesi);
-      emit(liste);
+    emit(liste);
   }
 }
